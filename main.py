@@ -19,6 +19,7 @@ predictions
 tf.nn.softmax(predictions).numpy()
 
 loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+
 model.compile(optimizer='adam',
               loss=loss_fn,
               metrics=['accuracy'])
@@ -26,3 +27,12 @@ model.compile(optimizer='adam',
 model.fit(x_train, y_train, epochs=5)
 
 model.evaluate(x_test,  y_test, verbose=2)
+
+probability_model = tf.keras.Sequential([
+  model,
+  tf.keras.layers.Softmax()
+])
+probability_model(x_test[:5])
+
+# Save the model
+model.save('mnist_model.keras')
